@@ -141,15 +141,45 @@ color:#222222 !important;
 
 #map {
   width: 100%;
-  height: 400px; /* default for desktop */
+  height: 400px; /* default for larger screens */
+  border-radius: 10px;
+  margin-bottom: 20px;
 }
 
-/* Mobile responsiveness */
 @media (max-width: 768px) {
   #map {
-    height: 250px;
+    height: 200px; /* reduced height for mobile screens */
   }
 }
+
+@media (max-width: 480px) {
+  #map {
+    height: 180px; /* even smaller for tiny screens */
+  }
+}
+
+
+@media (max-width: 768px) {
+  .navbar-collapse {
+    position: absolute;
+    top: 56px; /* or your navbar height */
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 999;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+}
+
+
+@media (max-width: 768px) {
+  .navbar-collapse .navbar-nav {
+    margin-top: 1rem;
+  }
+}
+
+
 
 
 
