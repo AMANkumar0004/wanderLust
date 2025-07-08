@@ -110,13 +110,13 @@ const listing = <%- JSON.stringify( listing )%>;
         <p class="card-text"><%= review.comment %></p>
         
       </div>
-      <form
-        class="mb-3"
-        method="POST"
-        action="/listings/<%= listing.id %>/reviews/<%= review.id %>?_method=DELETE"
-      >
-        <button class="btn btn-sm btn-dark">DELETE</button>
-      </form>
+      <% if(currUser && currUser._id.equals(review.author._id)) { %>
+                        <form class="mb-3" 
+                          method="POST" 
+                          action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                          <button class="btn btn-sm btn-dark">Delete</button>
+                        </form>
+                    <%}%>
     </div>
     <% } %>
     
