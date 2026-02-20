@@ -4,10 +4,10 @@
 (() => {
     'use strict'
   
-    // Fetch all the forms we want to apply custom Bootstrap validation styles to
+    
     const forms = document.querySelectorAll('.needs-validation')
   
-    // Loop over them and prevent submission
+    
     Array.from(forms).forEach(form => {
       form.addEventListener('submit', event => {
         if (!form.checkValidity()) {
@@ -19,3 +19,21 @@
       }, false)
     })
   })()
+
+  
+  const btn = document.getElementById("scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 50) {
+      btn.style.display = "flex";   
+    } else {
+      btn.style.display = "none";   
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
