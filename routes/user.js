@@ -3,7 +3,7 @@ const router = express.Router({mergeParams:true});
 const User = require("../models/user.js");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
-const {saveRedirectUrl}= require("../middleware.js")
+const {saveRedirectUrl,isLoggedIn}= require("../middleware.js")
 
 const userController = require("../controllers/users.js")
 
@@ -17,6 +17,10 @@ router.route("/login")
   saveRedirectUrl,
   passport.authenticate("local",{failureRedirect:"/login",failureFlash:true}) ,userController.login);
 router.get("/logout",userController.logout)
+
+router.get("/wishlist",isLoggedIn,wrapAsync(userController.getWishlist));
+router.post("/wishlist/:id",isLoggedIn,wrapAsync(userController.addToWishlist));
+router.delete("/wishlist/:id",isLoggedIn,wrapAsync(userController.removeFromWishlist));
 
 
 module.exports =router;

@@ -8,7 +8,17 @@ const userSchema = new Schema({
         type:String,
         required:true,
     },
-    
+    wishlist:[
+        {
+            type:Schema.Types.ObjectId,
+            ref:"Listing",
+        }
+    ],
+    points:{
+        type:Number,
+        default:0,
+        min:0,
+    }
 })
 
 

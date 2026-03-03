@@ -54,7 +54,11 @@ module.exports.showListings = async (req, res) => {
     req.flash("error", "Listing you requested for does not exist");
     res.redirect("/listings");
   }
-  res.render("listings/show.ejs", { listing });
+  const isWishlisted = req.user && req.user.wishlist
+    ? req.user.wishlist.some((wishId)=> wishId.equals(listing._id))
+    : false;
+
+  res.render("listings/show.ejs", { listing, isWishlisted });
 };
 
 module.exports.createListing = async (req, res, next) => {
