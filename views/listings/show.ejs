@@ -7,27 +7,7 @@ const listing = <%- JSON.stringify( listing )%>;
 
 <div class="row mt-3">
   <div class="col-8 offset-3">
-    <div class="d-flex align-items-center gap-3">
-      <h3 class="mb-0"><%= listing.title %></h3>
-      <% if(currUser){ %>
-        <form action="/wishlist/<%= listing._id %>" method="POST" class="d-inline">
-          <% if(isWishlisted){ %>
-            <input type="hidden" name="_method" value="DELETE" />
-            <button class="btn btn-outline-danger btn-sm" aria-label="Remove from wishlist">
-              <i class="fa-solid fa-heart"></i> Saved
-            </button>
-          <% } else { %>
-            <button class="btn btn-outline-danger btn-sm" aria-label="Save to wishlist">
-              <i class="fa-regular fa-heart"></i> Save
-            </button>
-          <% } %>
-        </form>
-      <% } else { %>
-        <a href="/login" class="btn btn-outline-danger btn-sm" aria-label="Login to save">
-          <i class="fa-regular fa-heart"></i> Save
-        </a>
-      <% } %>
-    </div>
+    <h3><%= listing.title %></h3>
   </div>
 
   <div class="card listing-card col-6 offset-3 show-card">
