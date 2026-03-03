@@ -6,7 +6,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+  "dev": "nodemon app.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +21,7 @@
     "connect-flash": "^0.1.1",
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.7",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "ejs": "^3.1.10",
     "ejs-mate": "^4.0.0",
     "express": "^4.21.2",
