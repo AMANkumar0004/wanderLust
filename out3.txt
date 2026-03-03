@@ -1,0 +1,114 @@
+server is listening to port 8080
+MongooseServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+    at _handleConnectionErrors (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\connection.js:1165:11)
+    at NativeConnection.openUri (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\connection.js:1096:11)
+    at async main (C:\anshika\college\elitecoder main\wanderLust\app.js:27:3) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) { '127.0.0.1:27017' => [ServerDescription] },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined
+}
+C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\sdam\topology.js:321
+                const timeoutError = new error_1.MongoServerSelectionError(`Server selection timed out after ${timeout?.duration} ms`, this.description);
+                                     ^
+
+MongoServerSelectionError: connect ECONNREFUSED 127.0.0.1:27017
+    at Topology.selectServer (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\sdam\topology.js:321:38)
+    at async Topology._connect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\sdam\topology.js:200:28)
+    at async Topology.connect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\sdam\topology.js:152:13)
+    at async topologyConnect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\mongo_client.js:233:17)
+    at async MongoClient._connect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\mongo_client.js:246:13)
+    at async MongoClient.connect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\mongo_client.js:171:13)
+    at async MongoClient.connect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\mongo_client.js:360:16) {
+  errorLabelSet: Set(0) {},
+  reason: TopologyDescription {
+    type: 'Unknown',
+    servers: Map(1) {
+      '127.0.0.1:27017' => ServerDescription {
+        address: '127.0.0.1:27017',
+        type: 'Unknown',
+        hosts: [],
+        passives: [],
+        arbiters: [],
+        tags: {},
+        minWireVersion: 0,
+        maxWireVersion: 0,
+        roundTripTime: -1,
+        minRoundTripTime: 0,
+        lastUpdateTime: 7489211,
+        lastWriteDate: 0,
+        error: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+            at Socket.<anonymous> (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\cmap\connect.js:285:44)
+            at Object.onceWrapper (node:events:623:26)
+            at Socket.emit (node:events:508:28)
+            at emitErrorNT (node:internal/streams/destroy:170:8)
+            at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+            at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+          errorLabelSet: Set(1) { 'ResetPool' },
+          beforeHandshake: false,
+          [cause]: Error: connect ECONNREFUSED 127.0.0.1:27017
+              at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+            errno: -4078,
+            code: 'ECONNREFUSED',
+            syscall: 'connect',
+            address: '127.0.0.1',
+            port: 27017
+          }
+        },
+        topologyVersion: null,
+        setName: null,
+        setVersion: null,
+        electionId: null,
+        logicalSessionTimeoutMinutes: null,
+        maxMessageSizeBytes: null,
+        maxWriteBatchSize: null,
+        maxBsonObjectSize: null,
+        primary: null,
+        me: null,
+        '$clusterTime': null,
+        iscryptd: false
+      }
+    },
+    stale: false,
+    compatible: true,
+    heartbeatFrequencyMS: 10000,
+    localThresholdMS: 15,
+    setName: null,
+    maxElectionId: null,
+    maxSetVersion: null,
+    commonWireVersion: 0,
+    logicalSessionTimeoutMinutes: null
+  },
+  code: undefined,
+  [cause]: MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017
+      at Socket.<anonymous> (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongodb\lib\cmap\connect.js:285:44)
+      at Object.onceWrapper (node:events:623:26)
+      at Socket.emit (node:events:508:28)
+      at emitErrorNT (node:internal/streams/destroy:170:8)
+      at emitErrorCloseNT (node:internal/streams/destroy:129:3)
+      at process.processTicksAndRejections (node:internal/process/task_queues:89:21) {
+    errorLabelSet: Set(1) { 'ResetPool' },
+    beforeHandshake: false,
+    [cause]: Error: connect ECONNREFUSED 127.0.0.1:27017
+        at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16) {
+      errno: -4078,
+      code: 'ECONNREFUSED',
+      syscall: 'connect',
+      address: '127.0.0.1',
+      port: 27017
+    }
+  }
+}
+
+Node.js v24.12.0

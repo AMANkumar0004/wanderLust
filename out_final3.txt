@@ -1,0 +1,27 @@
+Connected to in-memory DB at mongodb://127.0.0.1:59916/
+Error: Listing validation failed: geometry.type: Path `geometry.type` is required.
+    at ValidationError.inspect (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\error\validation.js:52:26)
+    at formatValue (node:internal/util/inspect:897:19)
+    at inspect (node:internal/util/inspect:409:10)
+    at formatWithOptionsInternal (node:internal/util/inspect:2645:40)
+    at formatWithOptions (node:internal/util/inspect:2507:10)
+    at console.value (node:internal/console/constructor:360:14)
+    at console.log (node:internal/console/constructor:416:61)
+    at main (C:\anshika\college\elitecoder main\wanderLust\app.js:114:13)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5) {
+  errors: {
+    'geometry.type': ValidatorError: Path `geometry.type` is required.
+        at validate (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\schemaType.js:1404:13)
+        at SchemaType.doValidate (C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\schemaType.js:1388:7)
+        at C:\anshika\college\elitecoder main\wanderLust\node_modules\mongoose\lib\document.js:3082:18
+        at process.processTicksAndRejections (node:internal/process/task_queues:84:11) {
+      properties: [Object],
+      kind: 'required',
+      path: 'geometry.type',
+      value: undefined,
+      reason: undefined,
+      Symbol(mongoose#validatorError): true
+    }
+  },
+  _message: 'Listing validation failed'
+}

@@ -1,0 +1,2 @@
+Connected to in-memory DB at mongodb://127.0.0.1:60539/
+server is listening to port 8080
