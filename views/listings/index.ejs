@@ -126,11 +126,11 @@
           <i class="fa-solid fa-arrow-down-a-z"></i> Sort By
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item <%= sort === 'price_asc' ? 'active' : '' %>" href="#"
+          <li><a class="dropdown-item <%= locals.sort === 'price_asc' ? 'active' : '' %>" href="#"
               onclick="applySort('price_asc')">Price: Low to High</a></li>
-          <li><a class="dropdown-item <%= sort === 'price_desc' ? 'active' : '' %>" href="#"
+          <li><a class="dropdown-item <%= locals.sort === 'price_desc' ? 'active' : '' %>" href="#"
               onclick="applySort('price_desc')">Price: High to Low</a></li>
-          <li><a class="dropdown-item <%= sort === 'newest' ? 'active' : '' %>" href="#"
+          <li><a class="dropdown-item <%= locals.sort === 'newest' ? 'active' : '' %>" href="#"
               onclick="applySort('newest')">Newest</a></li>
         </ul>
       </div>
