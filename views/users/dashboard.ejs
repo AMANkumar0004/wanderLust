@@ -1,0 +1,56 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="container mt-4 mb-5">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-4"><i class="fa-solid fa-suitcase"></i> My Bookings</h2>
+            </div>
+        </div>
+
+        <% if (bookings && bookings.length> 0) { %>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                <% for (let booking of bookings) { %>
+                    <% if (booking.listing) { %>
+                        <div class="col">
+                            <div class="card h-100 shadow-sm booking-card">
+                                <img src="<%= booking.listing.image.url %>" class="card-img-top" alt="Listing Image"
+                                    style="height: 200px; object-fit: cover;">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= booking.listing.title %>
+                                    </h5>
+                                    <p class="text-muted small mb-2"><i class="fa-solid fa-location-dot"></i>
+                                        <%= booking.listing.location %>, <%= booking.listing.country %>
+                                    </p>
+                                    <hr>
+                                    <p class="mb-1"><strong>Check-in:</strong>
+                                        <%= booking.checkIn.toLocaleDateString() %>
+                                    </p>
+                                    <p class="mb-1"><strong>Check-out:</strong>
+                                        <%= booking.checkOut.toLocaleDateString() %>
+                                    </p>
+                                    <p class="mb-1"><strong>Guests:</strong>
+                                        <%= booking.guests %>
+                                    </p>
+                                    <h6 class="mt-3 text-success fw-bold">Total Paid: &#x20B9; <%=
+                                            booking.totalPrice.toLocaleString("en-IN") %>
+                                    </h6>
+                                </div>
+                                <div class="card-footer bg-white border-top-0">
+                                    <a href="/listings/<%= booking.listing._id %>"
+                                        class="btn btn-outline-dark w-100">View Listing</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                            <% } %>
+            </div>
+            <% } else { %>
+                <div class="alert alert-info text-center p-5" role="alert">
+                    <i class="fa-solid fa-calendar-xmark fa-3x mb-3 text-muted"></i>
+                    <h4>No Bookings Found</h4>
+                    <p>Looks like you haven't booked any trips yet. Start exploring!</p>
+                    <a href="/listings" class="btn btn-dark mt-2">Explore Listings</a>
+                </div>
+                <% } %>
+    </div>
