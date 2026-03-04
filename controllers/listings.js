@@ -61,18 +61,15 @@ module.exports.showListings = async (req, res) => {
     })
     .populate("owner");
   if (!listing) {
-    req.flash("error", "Listing you requested for does not exist");
-    res.redirect("/listings");
-  }
-<<<<<<< HEAD
-  const isWishlisted = req.user && req.user.wishlist
-    ? req.user.wishlist.some((wishId) => wishId.equals(listing._id))
-    : false;
+  req.flash("error", "Listing you requested for does not exist");
+  res.redirect("/listings");
+}
 
-  res.render("listings/show.ejs", { listing, isWishlisted });
-=======
-  res.render("listings/show.ejs", { listing });
->>>>>>> upstream/main
+const isWishlisted = req.user && req.user.wishlist
+  ? req.user.wishlist.some((wishId) => wishId.equals(listing._id))
+  : false;
+
+res.render("listings/show.ejs", { listing, isWishlisted });
 };
 
 module.exports.createListing = async (req, res, next) => {
