@@ -1,2 +1,26 @@
 .env
 node_modules/
+# Node modules (never commit)
+node_modules/
+
+# Environment variables
+.env
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Optional: Build or temp folders (if you have any)
+dist/
+temp/
+
+# If using cloudinary uploads locally
+uploads/
+
+# If using npm lock (optional)
+package-lock.json
