@@ -1,31 +1,35 @@
-const mongoose = require("mongoose")
-
+require("dotenv").config({ path: require("path").resolve(__dirname, "../.env") });
+const mongoose = require("mongoose");
 const initData = require("./data.js");
+const Listing = require("../models/listing.js");
 
-const Listing = require("../models/listing.js")
+const dbUrl = process.env.ATLASDB_URL;
 
-
-
-main().then(()=>{
+main()
+  .then(() => {
     console.log("connected to DB");
-    
-})
-.catch(err => console.log(err));
+    initDB();
+  })
+  .catch((err) => console.log(err));
 
 async function main() {
-  await mongoose.connect('mongodb://127.0.0.1:27017/WanderLust');
-
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
+  await mongoose.connect(dbUrl);
 }
 
+const initDB = async () => {
+  await Listing.deleteMany({});
 
-const initDB= async()=>{
-  await  Listing.deleteMany({});
- initData.data= initData.data.map((obj)=>({...obj,owner:'680fd14f962bdd58a62a6833'}))
-  await Listing.insertMany(initData.data);
-  console.log("data was initialized");
-  
+  // Add default geometry and category so schema validation passes
+  const dataWithDefaults = initData.data.map((obj) => ({
+    ...obj,
+    geometry: {
+      type: "Point",
+      coordinates: [0, 0], // placeholder coordinates
+    },
+    category: "trending",
+  }));
+
+  await Listing.insertMany(dataWithDefaults);
+  console.log("✅ Data was initialized successfully!");
+  mongoose.connection.close();
 };
-initDB();
-
-
