@@ -15,10 +15,12 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-
+const i18n = require("i18n");
 const listingRouter = require("./routes/listing.js");
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
+const cookieParser = require("cookie-parser");
+app.use(cookieParser());
 
 
 // ================== DATABASE CONNECTION ==================
@@ -98,7 +100,33 @@ app.use((req, res, next) => {
   next();
 });
 
+i18n.configure({
+  locales: ["en", "hi", "es", "fr", "de"],
+  defaultLocale: "en",
+  directory: path.join(__dirname, "locales"),
+  queryParameter: "lang",
+  autoReload: true,
+  syncFiles: true,
+  cookie: "lang",  // <-- this enables cookie reading
+});
 
+app.use(i18n.init);
+app.use((req, res, next) => {
+  res.locals.__ = res.__;
+  res.locals.locale = req.getLocale(); // this works
+  next();
+});
+// Language switch route
+app.get("/change-language/:lang", (req, res) => {
+  const { lang } = req.params;
+  if (i18n.getLocales().includes(lang)) {
+    res.cookie("lang", lang, { maxAge: 900000, httpOnly: true });
+    req.setLocale(lang);
+  }
+  res.redirect("back"); // go back to previous page
+});
+
+ 
 // ================== ROUTES ==================
 
 app.use("/listings", listingRouter);
@@ -131,8 +159,12 @@ app.get("/reset-password/:token", async (req, res) => {
   res.render("reset-password", { token });
 });
 
+
+
+
 // ================== SERVER ==================
 
 app.listen(8080, () => {
   console.log("Server is listening on port 8080");
 });
+

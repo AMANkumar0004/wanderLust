@@ -31,7 +31,7 @@
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="navbar-nav">
           
-          <a class="nav-link" href="/listings">Explore</a>
+          <a class="nav-link" href="/listings"><%= __("Explore") %></a>
         
          
         </div>
@@ -44,7 +44,7 @@
   <input type="hidden" name="category" value="<%= typeof category !== 'undefined' ? category : 'all' %>">
 
   <button class="btn search-btn" type="submit">
-    <i class="fa-solid fa-magnifying-glass"></i>Search
+    <i class="fa-solid fa-magnifying-glass"></i> <%= __("Search") %>
   </button>
 </form>
 
@@ -53,15 +53,15 @@
 
 
         <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="/listings/new">Add New Listing</a>
+                <a class="nav-link" href="/listings/new"><%= __("Add New Listing") %></a>
           <% if(! currUser){ %>
             
-            <a class="nav-link "  href="/signup"><b>Sign up</b></a>
-            <a class="nav-link" href="/login"><b>Login</b></a>
+            <a class="nav-link "  href="/signup"><b><%= __("Sign up") %></b></a>
+            <a class="nav-link" href="/login"><b><%= __("Login") %></b></a>
             <% } %>
           <% if( currUser){ %>
             
-            <a class="nav-link" href="/logout"><b>Logout</b></a>
+            <a class="nav-link" href="/logout"><b><%= __("Logout") %></b></a>
             
             <% } %>
             
