@@ -21,15 +21,47 @@
           </div>
 
           <div class="mb-3">
-            Current Images <br>
-            <div class="row">
-              <% for(let img of originalImages) { %>
-                <div class="col-3">
-                  <img src="<%= img.url %>" alt="Listing Image" class="edit-thumbnail img-thumbnail mb-2" />
+            <label class="form-label fw-semibold">Current Images</label>
+            <p class="text-muted small mb-2">Click the ✕ on any image to mark it for deletion</p>
+            <div class="row g-2" id="currentImagesRow">
+              <% originalImages.forEach(function(img, index) { %>
+                <div class="col-3 position-relative current-img-wrapper" id="img-<%= index %>">
+                  <img src="<%= img.url %>" alt="Listing Image" class="img-thumbnail w-100"
+                    style="height:100px; object-fit:cover; border-radius:8px; transition: opacity 0.2s, filter 0.2s;" />
+                  <button type="button"
+                    class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0 delete-img-btn"
+                    style="width:24px;height:24px;padding:0;line-height:1;transform:translate(25%,-25%);font-size:12px;"
+                    onclick="markForDeletion(this, <%= index %>)">
+                    &times;
+                  </button>
+                  <input type="checkbox" name="deleteImages[]" value="<%= img.filename || '' %>"
+                    class="d-none delete-checkbox" />
                 </div>
-                <% } %>
+                <% }) %>
             </div>
           </div>
+
+          <script>
+            function markForDeletion(btn, index) {
+              const wrapper = document.getElementById('img-' + index);
+              const checkbox = wrapper.querySelector('.delete-checkbox');
+              const img = wrapper.querySelector('img');
+              if (checkbox.checked) {
+                checkbox.checked = false;
+                img.style.opacity = '1';
+                img.style.filter = 'none';
+                btn.innerHTML = '&times;';
+                btn.classList.replace('btn-success', 'btn-danger');
+              } else {
+                checkbox.checked = true;
+                img.style.opacity = '0.35';
+                img.style.filter = 'grayscale(100%)';
+                btn.innerHTML = '&#8631;';
+                btn.classList.replace('btn-danger', 'btn-success');
+              }
+            }
+          </script>
+
 
           <div class="mb-3">
             <label for="images" class="form-label">Upload New Images</label>

@@ -1,5 +1,6 @@
 const Listing = require("../models/listing");
 const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const { cloudinary } = require("../cloudConfig.js");
 const mapToken = process.env.MAP_TOKEN;
 let geocodingClient;
 
@@ -105,30 +106,75 @@ module.exports.renderEditForm = async (req, res) => {
     res.redirect("/listings");
   }
   let images = listing.images && listing.images.length > 0 ? listing.images : (listing.image ? [listing.image] : []);
+  // Explicitly map properties — spread on Mongoose subdocuments misses getter-backed fields like filename
   let originalImages = images.map(img => ({
-    ...img,
-    url: img.url.replace("/upload", "/upload/h_300,w_250")
+    url: img.url ? img.url.replace("/upload", "/upload/h_300,w_250") : '',
+    filename: img.filename || ''
   }));
+  console.log("[Edit] originalImages filenames:", originalImages.map(i => i.filename));
   res.render("listings/edit.ejs", { listing, originalImages });
 };
 
 module.exports.updateListing = async (req, res) => {
   let { id } = req.params;
-  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
+  console.log("[Update] deleteImages received:", req.body.deleteImages);
+  // Update basic fields (title, description, price, etc.)
+  let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing }, { new: true });
+
+  // 1. Delete images marked for removal
+  if (req.body.deleteImages) {
+    const toDelete = (Array.isArray(req.body.deleteImages)
+      ? req.body.deleteImages
+      : [req.body.deleteImages]).filter(Boolean); // strip empty strings (legacy images with no filename)
+
+    if (toDelete.length > 0) {
+      // Delete each from Cloudinary
+      for (let filename of toDelete) {
+        try {
+          await cloudinary.uploader.destroy(filename);
+        } catch (e) {
+          console.error("Cloudinary delete error:", e.message);
+        }
+      }
+
+      // Remove from DB using $pull (reliable — bypasses mongoose change tracking)
+      await Listing.findByIdAndUpdate(id, {
+        $pull: { images: { filename: { $in: toDelete } } }
+      });
+
+      // Re-fetch after $pull to get fresh state
+      listing = await Listing.findById(id);
+
+      // Fix primary thumbnail if it was deleted
+      if (listing.image && toDelete.includes(listing.image.filename)) {
+        listing.image = listing.images.length > 0 ? listing.images[0] : { url: "", filename: "" };
+        listing.markModified('image');
+        await listing.save();
+      }
+    }
+  }
+
+  // 2. Add newly uploaded images
   if (req.files && req.files.length > 0) {
     const newImages = req.files.map(f => ({ url: f.path, filename: f.filename }));
-    listing.images.push(...newImages);
-    // Update the single image field for backward compatibility if it's not set
+    await Listing.findByIdAndUpdate(id, {
+      $push: { images: { $each: newImages } }
+    });
+    // Set thumbnail if none exists
+    listing = await Listing.findById(id);
     if (!listing.image || !listing.image.url) {
       listing.image = newImages[0];
+      listing.markModified('image');
+      await listing.save();
     }
-    await listing.save();
   }
-  req.flash("success", "Listing Updated Successfully");
 
+  req.flash("success", "Listing Updated Successfully");
   res.redirect(`/listings/${id}`);
 };
+
+
 
 module.exports.destroyListing = async (req, res) => {
   let { id } = req.params;

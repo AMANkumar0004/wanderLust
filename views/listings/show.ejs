@@ -2,8 +2,9 @@
 
   <script>
     const mapToken = "<%= process.env.MAP_TOKEN %>";
-    const listing = <% - JSON.stringify(listing) %>;
+    const listing = JSON.parse(atob("<%= Buffer.from(JSON.stringify(listing)).toString('base64') %>"));
   </script>
+
 
   <div class="row mt-3">
     <div class="col-8 offset-3">

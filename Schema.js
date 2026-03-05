@@ -13,7 +13,8 @@ module.exports.listingSchema = Joi.object({
             filename: Joi.string()
         })).optional(),
         category: Joi.string().valid('mountains', 'arctic', 'farms', 'rooms', 'trending', 'cities', 'castles', 'pools', 'camping', 'beach').required()
-    }).required()
+    }).required(),
+    deleteImages: Joi.array().items(Joi.string().allow('')).optional()
 })
 
 module.exports.reviewSchema = Joi.object({
