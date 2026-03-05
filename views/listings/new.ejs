@@ -1,77 +1,134 @@
 <% layout('/layouts/boilerplate') -%>
 
-<div class="row">
-  <div class="col-8 offset-2 mt-3">
+  <div class="row">
+    <div class="col-8 offset-2 mt-3">
 
-    <h3>Create a New Listing</h3>
+      <h3>Create a New Listing</h3>
 
-    <form  action="/listings" method="POST" novalidate class="needs-validation"  enctype="multipart/form-data">
-      <div class="mb-3">
-        <label for="title" class="form-label">Title</label>
-        <input type="text" name="listing[title]" placeholder="Enter title" class="form-control" id="title" required>
-        <div class="invalid-feedback">
-          Title is required.
-        </div>
-      </div>
-
-      <div class="mb-3">
-        <label for="description" class="form-label">Description</label>
-        <textarea name="listing[description]" placeholder="Enter description" class="form-control" id="description" required></textarea>
-        <div class="invalid-feedback">
-          Description is required.
-        </div>
-      </div>
-
-      
-      <div class="mb-3">
-        <label for="image" class="form-label">Upload Listing Image</label>
-        <input type="file" name="listing[image]" class="form-control" id="image" required>
-      </div>
-
-      <div class="row">
-        <div class="mb-3 col-md-4">
-          <label for="price" class="form-label">Price</label>
-          <input  name="listing[price]" placeholder="Enter price" class="form-control" id="price" required>
+      <form action="/listings" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input type="text" name="listing[title]" placeholder="Enter title" class="form-control" id="title" required>
           <div class="invalid-feedback">
-            Price is required.
+            Title is required.
           </div>
         </div>
 
-        <div class="mb-3 col-md-8">
-          <label for="country" class="form-label">Country</label>
-          <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" id="country" required>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea name="listing[description]" placeholder="Enter description" class="form-control" id="description"
+            required></textarea>
           <div class="invalid-feedback">
-            Country is required.
+            Description is required.
           </div>
         </div>
-      </div>
 
-      <div class="mb-3">
-        <label for="location" class="form-label">Location</label>
-        <input type="text" name="listing[location]" placeholder="Enter location" class="form-control" id="location" required>
-        <div class="invalid-feedback">
-          Location is required.
+
+        <div class="mb-3">
+          <label for="images" class="form-label">Upload Listing Images</label>
+          <input type="file" name="listing[images]" class="form-control" id="images" multiple required>
+          <div class="form-text mt-2" id="fileCount">Selected: 0 files</div>
+          <div id="imagePreviews" class="row mt-2"></div>
         </div>
-      </div>
 
-      <select class="form-select" name="listing[category]" required>
-  <option value="">Select Category</option>
-  <option value="mountains">Mountains</option>
-  <option value="arctic">Arctic</option>
-  <option value="farms">Farms</option>
-  <option value="rooms">Rooms</option>
-  <option value="castles">Castles</option>
-  <option value="cities">Cities</option>
-  <option value="pools">Pools</option>
-  <option value="beach">Beach</option>
-  <option value="camping">Camping</option>
-</select>
+        <script>
+          const fileInput = document.getElementById('images');
+          const fileCount = document.getElementById('fileCount');
+          const previews = document.getElementById('imagePreviews');
+          let allFiles = new DataTransfer();
 
-   
-      <button type="submit" class="btn btn-dark add-btn mt-3 mb-3">Add</button>
-    </form>
+          fileInput.addEventListener('change', function (e) {
+            // Add new files to our collection
+            Array.from(this.files).forEach(file => {
+              allFiles.items.add(file);
+            });
 
-    
-    
+            // Update the input field with the cumulative list
+            this.files = allFiles.files;
+
+            updateUI();
+          });
+
+          function updateUI() {
+            fileCount.innerText = `Selected: ${allFiles.files.length} files`;
+            previews.innerHTML = '';
+
+            Array.from(allFiles.files).forEach((file, index) => {
+              const reader = new FileReader();
+              reader.onload = function (event) {
+                const div = document.createElement('div');
+                div.className = 'col-3 mb-3 position-relative';
+                div.innerHTML = `
+                  <img src="${event.target.result}" class="img-thumbnail" style="height: 100px; width: 100%; object-fit: cover;">
+                  <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 rounded-circle" 
+                          onclick="removeFile(${index})" style="transform: translate(25%, -25%); width: 24px; height: 24px; padding: 0; line-height: 1;">
+                    &times;
+                  </button>
+                `;
+                previews.appendChild(div);
+              }
+              reader.readAsDataURL(file);
+            });
+          }
+
+          window.removeFile = function (index) {
+            const newDT = new DataTransfer();
+            Array.from(allFiles.files).forEach((file, i) => {
+              if (i !== index) newDT.items.add(file);
+            });
+            allFiles = newDT;
+            fileInput.files = allFiles.files;
+            updateUI();
+          };
+        </script>
+
+        <div class="row">
+          <div class="mb-3 col-md-4">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="listing[price]" placeholder="Enter price" class="form-control" id="price" min="0"
+              step="1" required>
+            <div class="invalid-feedback">
+              Price is required.
+            </div>
+          </div>
+
+          <div class="mb-3 col-md-8">
+            <label for="country" class="form-label">Country</label>
+            <input type="text" name="listing[country]" placeholder="Enter country" class="form-control" id="country"
+              required>
+            <div class="invalid-feedback">
+              Country is required.
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="location" class="form-label">Location</label>
+          <input type="text" name="listing[location]" placeholder="Enter location" class="form-control" id="location"
+            required>
+          <div class="invalid-feedback">
+            Location is required.
+          </div>
+        </div>
+
+        <select class="form-select" name="listing[category]" required>
+          <option value="">Select Category</option>
+          <option value="mountains">Mountains</option>
+          <option value="arctic">Arctic</option>
+          <option value="farms">Farms</option>
+          <option value="rooms">Rooms</option>
+          <option value="castles">Castles</option>
+          <option value="cities">Cities</option>
+          <option value="pools">Pools</option>
+          <option value="beach">Beach</option>
+          <option value="camping">Camping</option>
+        </select>
+
+
+        <button type="submit" class="btn btn-dark add-btn mt-3 mb-3">Add</button>
+      </form>
+
+
+
+    </div>
   </div>
-</div>
