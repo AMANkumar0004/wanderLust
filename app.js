@@ -26,9 +26,7 @@ const { log } = require('console');
 const dbUrl = process.env.ATLASDB_URL;
 
 
-const reviewRouter = require("./routes/review.js");
-const userRouter = require("./routes/user.js");
-const { log } = require('console');
+
 
 const { MongoMemoryServer } = require('mongodb-memory-server');
 
