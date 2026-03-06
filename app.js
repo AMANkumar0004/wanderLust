@@ -25,7 +25,7 @@ const { log } = require('console');
 
 const dbUrl = process.env.ATLASDB_URL;
 
-const listingRouter = require("./routes/listing.js");
+
 const reviewRouter = require("./routes/review.js");
 const userRouter = require("./routes/user.js");
 const { log } = require('console');
