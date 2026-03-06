@@ -23,7 +23,7 @@ const userRouter = require("./routes/user.js");
 const plannerRouter = require("./routes/planner.js");
 const { log } = require('console');
 
-const dbUrl = process.env.ATLASDB_URL;
+
 
 
 
