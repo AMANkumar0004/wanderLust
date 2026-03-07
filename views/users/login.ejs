@@ -6,10 +6,10 @@
         <form action="/login" method="POST" class="needs-validation" novalidate>
 
             <div class="mb-3">
-                <label for="username" class="form-label">Username</label>
+                <label for="username" class="form-label"><%= __("Username") %></label>
                 <input type="text" name="username"  class="form-control" id="username" required>
                 <div class="invalid-feedback">
-                 Please enter a Username
+                 <%= __("Please enter a Username") %>
                 </div>
                
               </div>
@@ -33,9 +33,9 @@
                 </div>
               </div>
 
-<a href="/forgot-password" class="text-decoration-none">Forgot Password?</a>
+<a href="/forgot-password" class="text-decoration-none"><%= __("Forgot Password?") %></a>
 
-<button class="btn btn-success mt-2">Login</button>
+<button class="btn btn-success mt-2"><%= __("Login") %></button>
 
         </form>
 
