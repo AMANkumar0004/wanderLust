@@ -1,0 +1,4 @@
+Connected to in-memory DB at mongodb://127.0.0.1:60539/
+server is listening to port 8080
+(node:12732) [DEP0044] DeprecationWarning: The `util.isArray` API is deprecated. Please use `Array.isArray()` instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
