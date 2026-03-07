@@ -12,6 +12,11 @@ module.exports.createBooking = async (req, res) => {
         return res.redirect("/listings");
     }
 
+    if (listing.owner.equals(req.user._id)) {
+        req.flash("error", "You cannot book your own listing.");
+        return res.redirect(`/listings/${id}`);
+    }
+
     const { checkIn, checkOut, guests } = req.body.booking;
 
     const numGuests = parseInt(guests);
