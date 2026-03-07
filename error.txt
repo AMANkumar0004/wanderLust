@@ -1,0 +1,17 @@
+C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\parse-mapbox-token\index.js:16
+    throw new Error('Invalid token');
+    ^
+
+Error: Invalid token
+    at parseToken (C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\parse-mapbox-token\index.js:16:11)
+    at NodeClient.MapiClient (C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\mapbox-sdk\lib\classes\mapi-client.js:28:3)
+    at new NodeClient (C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\mapbox-sdk\lib\node\node-client.js:7:14)
+    at createNodeClient (C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\mapbox-sdk\lib\node\node-client.js:24:10)
+    at C:\anshika\college\elitecoder main\wanderLust\node_modules\@mapbox\mapbox-sdk\services\service-helpers\create-service-factory.js:13:16
+    at Object.<anonymous> (C:\anshika\college\elitecoder main\wanderLust\controllers\listings.js:4:25)
+    at Module._compile (node:internal/modules/cjs/loader:1761:14)
+    at Object..js (node:internal/modules/cjs/loader:1893:10)
+    at Module.load (node:internal/modules/cjs/loader:1481:32)
+    at Module._load (node:internal/modules/cjs/loader:1300:12)
+
+Node.js v24.12.0
