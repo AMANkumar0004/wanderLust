@@ -1,0 +1,64 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="row mt-4">
+        <div class="col-10 offset-1">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3><i class="fa-solid fa-list-check me-2"></i>Bookings for: <em>
+                        <%= listing.title %>
+                    </em></h3>
+                <a href="/listings/<%= listing._id %>" class="btn btn-outline-dark btn-sm">← Back to Listing</a>
+            </div>
+
+            <% if (bookings.length===0) { %>
+                <div class="alert alert-info">No bookings yet for this listing.</div>
+                <% } else { %>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Guest</th>
+                                    <th>Check-in</th>
+                                    <th>Check-out</th>
+                                    <th>Guests</th>
+                                    <th>Nights</th>
+                                    <th>Total Price</th>
+                                    <th>Booked On</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% bookings.forEach((b, i)=> { %>
+                                    <% const msPerDay=1000 * 60 * 60 * 24; %>
+                                        <% const nights=Math.ceil((new Date(b.checkOut) - new Date(b.checkIn)) /
+                                            msPerDay); %>
+                                            <tr>
+                                                <td>
+                                                    <%= i + 1 %>
+                                                </td>
+                                                <td>@<%= b.user ? b.user.username : "Unknown" %>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(b.checkIn).toLocaleDateString("en-IN") %>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(b.checkOut).toLocaleDateString("en-IN") %>
+                                                </td>
+                                                <td>
+                                                    <%= b.guests %>
+                                                </td>
+                                                <td>
+                                                    <%= nights %>
+                                                </td>
+                                                <td>&#x20B9; <%= b.totalPrice.toLocaleString("en-IN") %>
+                                                </td>
+                                                <td>
+                                                    <%= new Date(b.createdAt).toLocaleDateString("en-IN") %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <% } %>
+        </div>
+    </div>
