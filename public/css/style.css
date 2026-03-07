@@ -1,160 +1,210 @@
-body{
-   font-family: "Plus Jakarta Sans", sans-serif !important;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-  
-}
-
-.container{
-    flex: 1;
-}
-
-.navbar{
-    height: 5rem;
-    background-color: white;
-}
-
-.fa-compass{
-    color:#fe424d;
-    font-size: 2rem;
-}
-
-.nav-link{
-color:#222222 !important;
-}
-
-.f-info-links a{
-    text-decoration: none;
-    color: #222222;
-}
-
-.f-info-links a:hover{
-    text-decoration: underline;
-    
-}
-
-.f-info-links,.f-info-socials,.f-info-brand{
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+body {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 
 }
 
-.f-info-socials i{
-    font-size: 1.2rem;
-    margin-right: 1rem;
+.container {
+  flex: 1;
 }
 
-.f-info{
-    text-align: center;
-    height: 8rem;
-    background-color: #ebebeb;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: space-evenly;
+.navbar {
+  height: 5rem;
+  background-color: white;
+}
+
+.fa-compass {
+  color: #fe424d;
+  font-size: 2rem;
+}
+
+.nav-link {
+  color: #222222 !important;
+}
+
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+}
+
+.f-info-links a:hover {
+  text-decoration: underline;
+
+}
+
+.f-info-links,
+.f-info-socials,
+.f-info-brand {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.f-info-socials i {
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+.f-info {
+  text-align: center;
+  height: 8rem;
+  background-color: #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
 
 }
 
 
 /* cards */
-.listing-card{
-    border: none !important; 
-    margin-bottom: 2rem;
+.listing-card {
+  border: none !important;
+  margin-bottom: 2rem;
 }
 
-.card-img-top{
-    border-radius: 1rem !important;
-    width: 100% !important;
-    object-fit: cover !important;
+.card-img-top {
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
 }
 
-.card-body{
-    padding: 0;
+.card-body {
+  padding: 0;
 
 }
 
-.card-text p{
-    font-weight: 400 !important;
+.card-text p {
+  font-weight: 400 !important;
 }
 
-.listing-link{
-    text-decoration: none;
+.listing-link {
+  text-decoration: none;
 }
 
 
 /* card effect */
-.card-img-overlay{
-    opacity: 0;
+.card-img-overlay {
+  opacity: 0;
 }
 
-.card-img-overlay:hover{
-    opacity: 0.2;
-    background-color: white;
+.card-img-overlay:hover {
+  opacity: 0.2;
+  background-color: white;
 }
 
 
 /* New Page */
-.add-btn{
-    background-color: #fe424d !important;
-    border: none !important;
+.add-btn {
+  background-color: #fe424d !important;
+  border: none !important;
 }
 
 
 /* Edit page  */
-.edit-btn{
-    background-color: #fe424d !important;
-    border: none !important;
+.edit-btn {
+  background-color: #fe424d !important;
+  border: none !important;
 }
 
 
 /* Show page  */
-.show-img{
-    height: 30vh;
+.show-img {
+  height: 30vh;
 
 }
 
-.btns{
-    display: flex;
+/* Carousel arrow buttons — Airbnb style */
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute !important;
+  top: 50% !important;
+  bottom: unset !important;
+  transform: translateY(-50%) !important;
+  width: 34px !important;
+  height: 34px !important;
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 50% !important;
+  opacity: 1 !important;
+  border: 1px solid rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.18) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: box-shadow 0.2s ease, transform 0.2s ease !important;
 }
 
-.show-card{
-    padding-left: 0;
-    padding-right: 0;
+.carousel-control-prev {
+  left: 12px !important;
+}
+
+.carousel-control-next {
+  right: 12px !important;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+  background-color: white !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.28) !important;
+  transform: translateY(-50%) scale(1.07) !important;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  width: 13px !important;
+  height: 13px !important;
+  filter: brightness(0) !important;
+  background-size: 100% 100%;
+}
+
+
+.btns {
+  display: flex;
+}
+
+.show-card {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 
 /* edit image  */
 .edit-thumbnail {
-    width: 40%;
-    max-width: 200px;
-    aspect-ratio: 4 / 3;   /* wider rectangular shape */
-    object-fit: cover;
-    border-radius: 6px;
-    margin-bottom: 10px;
-  }
-  
+  width: 40%;
+  max-width: 200px;
+  aspect-ratio: 4 / 3;
+  /* wider rectangular shape */
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
+}
+
 
 /* map  */
 
 #map {
   width: 100%;
-  height: 400px; /* default for larger screens */
+  height: 400px;
+  /* default for larger screens */
   border-radius: 10px;
   margin-bottom: 20px;
 }
 
 @media (max-width: 768px) {
   #map {
-    height: 200px; /* reduced height for mobile screens */
+    height: 200px;
+    /* reduced height for mobile screens */
   }
 }
 
 @media (max-width: 480px) {
   #map {
-    height: 180px; /* even smaller for tiny screens */
+    height: 180px;
+    /* even smaller for tiny screens */
   }
 }
 
@@ -162,13 +212,14 @@ color:#222222 !important;
 @media (max-width: 768px) {
   .navbar-collapse {
     position: absolute;
-    top: 56px; /* or your navbar height */
+    top: 56px;
+    /* or your navbar height */
     left: 0;
     width: 100%;
     background-color: white;
     z-index: 999;
     padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -191,12 +242,12 @@ color:#222222 !important;
   border: none;
   font-weight: 600;
 
-  
-  display: none;              
+
+  display: none;
   align-items: center;
   justify-content: center;
 
-  
+
   position: fixed;
   bottom: 30px;
   right: 30px;
@@ -237,7 +288,7 @@ color:#222222 !important;
   bottom: -20px;
   content: "Back to Top";
   color: white;
- 
+
   font-size: 0px;
 }
 
@@ -245,8 +296,6 @@ color:#222222 !important;
   font-size: 13px;
   opacity: 1;
   bottom: unset;
-  
+
   transition-duration: 0.3s;
 }
-
-  

@@ -1,79 +1,216 @@
 <%= layout("/layouts/boilerplate.ejs") %>
 
-  <body>
-    <div class="row">
-      <div class="col-8 offset-2 mt-3">
-        <h3>Edit your listing</h3>
+<body>
+  <div class="row">
+    <div class="col-8 offset-2 mt-3">
+      <h3>Edit your listing</h3>
 
-        <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation"
-          enctype="multipart/form-data">
-          <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
+      <form action="/listings/<%= listing._id %>?_method=PUT"
+        method="POST"
+        novalidate
+        class="needs-validation"
+        enctype="multipart/form-data">
 
-            <input type="text" name="listing[title]" value="<%= listing.title %>" class="form-control" required />
-            <div class="invalid-feedback">Title is required</div>
+        <div class="mb-3">
+          <label class="form-label">Title</label>
+          <input type="text"
+            name="listing[title]"
+            value="<%= listing.title %>"
+            class="form-control"
+            required>
+          <div class="invalid-feedback">Title is required</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <textarea name="listing[description]" class="form-control" required><%= listing.description %></textarea>
+        </div>
+
+
+        <!-- CURRENT IMAGES -->
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Current Images</label>
+          <p class="text-muted small">Click ✕ to mark image for deletion</p>
+
+          <div class="row g-2">
+
+            <% originalImages.forEach(function(img,index){ %>
+
+              <div class="col-3 position-relative" id="img-<%= index %>">
+
+                <img
+                  src="<%= img.url %>"
+                  class="img-thumbnail w-100"
+                  style="height:100px;object-fit:cover;border-radius:8px">
+
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm rounded-circle position-absolute top-0 end-0"
+                  style="width:24px;height:24px;transform:translate(25%,-25%)"
+                  onclick="markForDeletion(<%= index %>)">
+
+                  &times;
+
+                </button>
+
+                <input
+                  type="checkbox"
+                  name="deleteImages[]"
+                  value="<%= img.filename || '' %>"
+                  class="d-none delete-checkbox">
+
+              </div>
+
+            <% }) %>
+
           </div>
-          <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea name="listing[description]" class="form-control" required>
-<%= listing.description %></textarea>
-            <div class="invalid-feedback">Please add a short description</div>
+        </div>
+
+
+        <!-- NEW IMAGE UPLOAD -->
+        <div class="mb-3">
+          <label class="form-label">Upload New Images</label>
+
+          <input
+            type="file"
+            name="listing[images]"
+            class="form-control"
+            id="images"
+            multiple>
+
+          <div class="form-text mt-2" id="newFileCount">
+            Selected: 0 new files
           </div>
 
-          <div class="mb-3">
-            Original Image <br>
-            <img src="<%= originalImageUrl %>" alt="Listing Image" class="edit-thumbnail" />
+          <div id="newImagePreviews" class="row mt-2"></div>
+        </div>
 
+
+        <!-- PRICE + GUESTS + COUNTRY -->
+        <div class="row">
+
+          <div class="mb-3 col-md-4">
+            <label class="form-label">Price</label>
+            <input type="number"
+              name="listing[price]"
+              value="<%= listing.price %>"
+              class="form-control"
+              required>
           </div>
 
-          <div class="mb-3">
-            <label for="image" class="form-label">Upload New Image</label>
-            <input type="file" name="listing[image]" class="form-control" />
-          </div>
-          <div class="row">
-            <div class="mb-3 col-md-4">
-              <label for="price" class="form-label">Price (per night)</label>
-              <input type="number" name="listing[price]" value="<%= listing.price %>" class="form-control" required />
-              <div class="invalid-feedback">Price is required</div>
-            </div>
-
-            <div class="mb-3 col-md-4">
-              <label for="maxGuests" class="form-label">Max Guests</label>
-              <input type="number" name="listing[maxGuests]" value="<%= listing.maxGuests || 1 %>" class="form-control"
-                min="1" required />
-              <div class="invalid-feedback">Max guests is required</div>
-            </div>
-
-            <div class="mb-3 col-md-4">
-              <label for="country" class="form-label">Country</label>
-
-              <input type="text" name="listing[country]" value="<%= listing.country %>" class="form-control" required />
-              <div class="invalid-feedback">Country is required</div>
-            </div>
+          <div class="mb-3 col-md-4">
+            <label class="form-label">Max Guests</label>
+            <input
+              type="number"
+              name="listing[maxGuests]"
+              value="<%= listing.maxGuests || 1 %>"
+              min="1"
+              class="form-control">
           </div>
 
-          <div class="mb-3">
-            <label for="location" class="form-label">Location</label>
-            <input type="text" name="listing[location]" value="<%= listing.location %>" class="form-control" required />
-            <div class="invalid-feedback">Location is required</div>
+          <div class="mb-3 col-md-4">
+            <label class="form-label">Country</label>
+            <input
+              type="text"
+              name="listing[country]"
+              value="<%= listing.country %>"
+              class="form-control"
+              required>
           </div>
-          <br /><br />
 
-          <select class="form-select" name="listing[category]" required>
-            <option value="">Select Category</option>
-            <option value="mountains">Mountains</option>
-            <option value="arctic">Arctic</option>
-            <option value="farms">Farms</option>
-            <option value="rooms">Rooms</option>
-            <option value="castles">Castles</option>
-            <option value="cities">Cities</option>
-            <option value="pools">Pools</option>
-            <option value="beach">Beach</option>
-            <option value="camping">Camping</option>
-          </select>
-          <br><br>
-          <button class="btn btn-dark edit-btn mb-3">EDIT</button>
-        </form>
-      </div>
+        </div>
+
+
+        <div class="mb-3">
+          <label class="form-label">Location</label>
+          <input
+            type="text"
+            name="listing[location]"
+            value="<%= listing.location %>"
+            class="form-control"
+            required>
+        </div>
+
+
+        <select class="form-select" name="listing[category]" required>
+          <option value="">Select Category</option>
+          <option value="mountains">Mountains</option>
+          <option value="arctic">Arctic</option>
+          <option value="farms">Farms</option>
+          <option value="rooms">Rooms</option>
+          <option value="castles">Castles</option>
+          <option value="cities">Cities</option>
+          <option value="pools">Pools</option>
+          <option value="beach">Beach</option>
+          <option value="camping">Camping</option>
+        </select>
+
+        <br><br>
+
+        <button class="btn btn-dark edit-btn mb-3">EDIT</button>
+
+      </form>
     </div>
-  </body>
+  </div>
+
+
+<script>
+
+function markForDeletion(index){
+
+  const wrapper = document.getElementById('img-'+index)
+  const checkbox = wrapper.querySelector('.delete-checkbox')
+  const img = wrapper.querySelector('img')
+
+  checkbox.checked = !checkbox.checked
+
+  if(checkbox.checked){
+    img.style.opacity='0.35'
+    img.style.filter='grayscale(100%)'
+  }else{
+    img.style.opacity='1'
+    img.style.filter='none'
+  }
+
+}
+
+
+const fileInput = document.getElementById('images')
+const previews = document.getElementById('newImagePreviews')
+const count = document.getElementById('newFileCount')
+
+fileInput.addEventListener('change',function(){
+
+  previews.innerHTML=''
+  const files=[...this.files]
+
+  count.innerText=`Selected: ${files.length} new files`
+
+  files.forEach(file=>{
+
+    const reader=new FileReader()
+
+    reader.onload=function(e){
+
+      const div=document.createElement('div')
+      div.className='col-3 mb-3'
+
+      div.innerHTML=`
+        <img src="${e.target.result}"
+        class="img-thumbnail"
+        style="height:100px;width:100%;object-fit:cover">
+      `
+
+      previews.appendChild(div)
+
+    }
+
+    reader.readAsDataURL(file)
+
+  })
+
+})
+
+</script>
+
+</body>

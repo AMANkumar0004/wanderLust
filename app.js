@@ -2,6 +2,14 @@ if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
+// Fix for MongoDB Atlas DNS resolution issues
+const dns = require("dns");
+try {
+  dns.setServers(["8.8.8.8", "8.8.4.4"]);
+} catch (e) {
+  console.log("Could not set custom DNS servers:", e.message);
+}
+
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
@@ -28,13 +36,14 @@ const bookingRouter = require("./routes/booking.js");
 
 const dbUrl = process.env.DB_URL || process.env.ATLASDB_URL;
 
-mongoose.connect(dbUrl)
-.then(() => {
-  console.log("Connected to MongoDB");
-})
-.catch((err) => {
-  console.log(err);
-});
+mongoose
+  .connect(dbUrl)
+  .then(() => {
+    console.log("Connected to MongoDB");
+  })
+  .catch((err) => {
+    console.log("MongoDB connection error:", err);
+  });
 
 // ================= EXPRESS =================
 
@@ -62,7 +71,7 @@ store.on("error", () => {
 
 const sessionOptions = {
   store,
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || "fallback_secret",
   resave: false,
   saveUninitialized: false,
   cookie: {
