@@ -1,0 +1,93 @@
+<% layout('/layouts/boilerplate') -%>
+
+    <div class="row mt-3">
+        <div class="col-8 offset-2">
+            <h2 class="mb-4 text-center">Edit Your Trip Plan</h2>
+            <form action="/planner/itinerary/<%= itinerary._id %>?_method=PUT" method="POST" class="needs-validation"
+                novalidate>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Trip Title</label>
+                    <input type="text" name="title" id="title" class="form-control" value="<%= itinerary.title %>"
+                        required>
+                    <div class="invalid-feedback">Please provide a title for your trip.</div>
+                </div>
+
+                <h4>Itinerary Details</h4>
+                <div id="itinerary-items" class="mt-3">
+                    <% itinerary.items.forEach((item, index)=> { %>
+                        <div class="card mb-3 itinerary-item border-0 shadow-sm bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-5 mb-2">
+                                        <label class="form-label">Destination</label>
+                                        <select name="items[<%= index %>][listing]" class="form-select" required>
+                                            <option value="">Choose a Favorite...</option>
+                                            <% for(let favorite of user.favorites) { %>
+                                                <option value="<%= favorite._id %>" <%=item.listing &&
+                                                    item.listing._id.equals(favorite._id) ? 'selected' : '' %>><%=
+                                                        favorite.title %>
+                                                </option>
+                                                <% } %>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-2 mb-2">
+                                        <label class="form-label">Day</label>
+                                        <input type="number" name="items[<%= index %>][day]" class="form-control"
+                                            value="<%= item.day %>" min="1" required>
+                                    </div>
+                                    <div class="col-md-5 mb-2">
+                                        <label class="form-label">Notes</label>
+                                        <input type="text" name="items[<%= index %>][notes]" class="form-control"
+                                            value="<%= item.notes %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+
+                <button type="button" id="add-item-btn" class="btn btn-outline-dark mb-4">
+                    <i class="fa-solid fa-plus"></i> Add Another Destination
+                </button>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success btn-lg">Save Changes</button>
+                    <a href="/planner/dashboard" class="btn btn-outline-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let itemIndex = parseInt("<%= itinerary.items.length %>");
+        document.getElementById('add-item-btn').addEventListener('click', () => {
+            const container = document.getElementById('itinerary-items');
+            const newItem = document.createElement('div');
+            newItem.className = 'card mb-3 itinerary-item border-0 shadow-sm bg-light';
+            newItem.innerHTML = `
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-5 mb-2">
+                        <label class="form-label">Destination</label>
+                        <select name="items[\${itemIndex}][listing]" class="form-select" required>
+                            <option value="">Choose a Favorite...</option>
+                            <% for(let favorite of user.favorites) { %>
+                                <option value="<%= favorite._id %>"><%= favorite.title %></option>
+                            <% } %>
+                        </select>
+                    </div>
+                    <div class="col-md-2 mb-2">
+                        <label class="form-label">Day</label>
+                        <input type="number" name="items[\${itemIndex}][day]" class="form-control" value="1" min="1" required>
+                    </div>
+                    <div class="col-md-5 mb-2">
+                        <label class="form-label">Notes</label>
+                        <input type="text" name="items[\${itemIndex}][notes]" class="form-control">
+                    </div>
+                </div>
+            </div>
+        `;
+            container.appendChild(newItem);
+            itemIndex++;
+        });
+    </script>
