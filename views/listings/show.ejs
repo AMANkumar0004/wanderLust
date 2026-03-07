@@ -1,138 +1,403 @@
 <% layout('/layouts/boilerplate') -%>
 
-  <script>
-    const mapToken = "<%= process.env.MAP_TOKEN %>";
-    const listing = JSON.parse(atob("<%= Buffer.from(JSON.stringify(listing)).toString('base64') %>"));
-  </script>
+<div id="listing-data"
+     data-listing='<%- JSON.stringify(listing) %>'
+     data-map-token="<%= process.env.MAP_TOKEN %>"
+     style="display:none;">
+</div>
 
+<script>
+const mapToken = document.getElementById("listing-data").dataset.mapToken;
+const listingData = JSON.parse(document.getElementById("listing-data").dataset.listing);
+</script>
 
-  <div class="row mt-3">
-    <div class="col-8 offset-3">
-      <h3>
-        <%= listing.title %>
-      </h3>
-    </div>
-
-    <div class="card listing-card col-6 offset-3 show-card">
-      <div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-          <% let carouselImages=listing.images && listing.images.length> 0 ? listing.images : (listing.image ?
-            [listing.image] : []) %>
-            <% carouselImages.forEach((img, index)=> { %>
-              <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
-                <img src="<%= img.url %>" class="d-block w-100 show-img" alt="Listing_image">
-              </div>
-              <% }) %>
-        </div>
-        <% if (carouselImages.length> 1) { %>
-          <button class="carousel-control-prev" type="button" data-bs-target="#listingCarousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-          </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#listingCarousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-          </button>
-          <% } %>
-      </div>
-      <div class="card-body">
-        <p class="card-text">Owned By:<i>
-            <%= listing.owner.username %>
-          </i></p>
-
-        <p class="card-text">
-          <%= listing.description %> <br />
-        </p>
-        <p class="card-text">
-          &#x20B9; <%= listing.price.toLocaleString("en-IN") %> <br />
-        </p>
-        <p class="card-text">
-          <%= listing.location %> <br />
-        </p>
-        <p class="card-text">
-          <%= listing.country %>
-        </p>
-      </div>
-    </div>
+<div class="row mt-3">
+  <div class="col-8 offset-3">
+    <h3><%= listing.title %></h3>
   </div>
 
-  <% if (currUser && currUser._id.equals(listing.owner._id)) {%>
-    <div class="btns">
-      <a href="/listings/<%= listing._id %>/edit" class="btn btn-dark edit-btn offset-3">EDIT</a>
+  <div class="card listing-card col-6 offset-3 show-card">
 
-      <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
-        <button class="btn btn-dark offset-5">DELETE</button>
-      </form>
+```
+<!-- IMAGE CAROUSEL -->
+<div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
+
+  <div class="carousel-inner">
+
+    <% let carouselImages =
+    listing.images && listing.images.length > 0
+    ? listing.images
+    : (listing.image ? [listing.image] : []) %>
+
+    <% carouselImages.forEach((img,index)=>{ %>
+
+    <div class="carousel-item <%= index===0 ? 'active' : '' %>">
+      <img src="<%= img.url %>" class="d-block w-100 show-img">
     </div>
-    <% }%>
 
-      <div class="col-6 offset-3 mb-3">
-        <hr />
-        <%if(currUser){%>
+    <% }) %>
 
-          <h4>Leave a review</h4>
-          <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation">
-            <div class="col">
-              <label for="rating" class="form-label">Rating</label>
-              <fieldset class="starability-slot">
-                <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked
-                  aria-label="No rating." />
-                <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                <label for="first-rate1" title="Terrible">1 star</label>
-                <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                <label for="first-rate2" title="Not good">2 stars</label>
-                <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                <label for="first-rate3" title="Average">3 stars</label>
-                <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                <label for="first-rate4" title="Very good">4 stars</label>
-                <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                <label for="first-rate5" title="Amazing">5 stars</label>
-              </fieldset>
-            </div>
+  </div>
 
-            <div class="col">
-              <label for="comment" class="form-label">Comment:</label>
-              <textarea name="review[comment]" id="comment" cols="30" rows="5" class="form-control" required></textarea>
-              <div class="invalid-feedback">Add you point of review</div>
-            </div>
-            <div class="btns col-8 mt-2">
-              <button type="submit" class="btn btn-outline-dark">Submit</button>
-            </div>
-          </form>
-          <%}%>
-            <% if(listing.reviews.length>0) {%>
-              <div class="row">
-                <hr />
-                <p><b>All Reviews</b></p>
-                <% for(review of listing.reviews){%>
-                  <div class="card col-md-12 col-lg-5 col-sm-12 ms-3 mb-3">
-                    <div class="card-body">
-                      <h5 class="card-text">@<%= review.author.username %>
-                      </h5>
-                      <p class="starability-result" data-rating="<%= review.rating %>">
-                        stars
-                      </p>
-                      <p class="card-text">
-                        <%= review.comment %>
-                      </p>
+  <% if(carouselImages.length>1){ %>
 
-                    </div>
-                    <% if(currUser && currUser._id.equals(review.author._id)) { %>
-                      <form class="mb-3" method="POST"
-                        action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                        <button class="btn btn-sm btn-dark">Delete</button>
-                      </form>
-                      <%}%>
-                  </div>
-                  <% } %>
+  <button class="carousel-control-prev"
+          type="button"
+          data-bs-target="#listingCarousel"
+          data-bs-slide="prev">
 
-              </div>
-              <% } %>
-      </div>
-      <div class="col-6 offset-3 mb-3">
-        <h3>Where you'll be</h3>
-        <div id="map"></div>
-      </div>
-      </div>
+    <span class="carousel-control-prev-icon"></span>
 
-      <script src="/js/map.js"></script>
+  </button>
+
+  <button class="carousel-control-next"
+          type="button"
+          data-bs-target="#listingCarousel"
+          data-bs-slide="next">
+
+    <span class="carousel-control-next-icon"></span>
+
+  </button>
+
+  <% } %>
+
+</div>
+
+<div class="card-body">
+
+  <p class="card-text">
+    Owned By:
+    <i><%= listing.owner ? listing.owner.username : "WanderLust" %></i>
+  </p>
+
+  <p class="card-text"><%= listing.description %></p>
+
+  <p class="card-text">
+    &#x20B9; <%= listing.price.toLocaleString("en-IN") %> / night
+  </p>
+
+  <p class="card-text">
+    <i class="fa-solid fa-users"></i>
+    Max Guests:
+    <strong><%= listing.maxGuests || 1 %></strong>
+  </p>
+
+  <p class="card-text"><%= listing.location %></p>
+  <p class="card-text"><%= listing.country %></p>
+
+  <% if(currUser){ %>
+
+  <hr>
+
+  <% if(currUser.favorites && currUser.favorites.includes(listing._id.toString())){ %>
+
+  <form action="/planner/favorites/<%= listing._id %>?_method=DELETE" method="POST">
+    <button class="btn btn-danger btn-sm">
+      <i class="fa-solid fa-heart"></i> Remove from Favorites
+    </button>
+  </form>
+
+  <% } else { %>
+
+  <form action="/planner/favorites/<%= listing._id %>" method="POST">
+    <button class="btn btn-outline-danger btn-sm">
+      <i class="fa-regular fa-heart"></i> Add to Favorites
+    </button>
+  </form>
+
+  <% } %>
+
+  <% } %>
+
+</div>
+```
+
+  </div>
+</div>
+
+<!-- EDIT / DELETE BUTTONS -->
+
+<% if(currUser && listing.owner && currUser._id.equals(listing.owner._id)){ %>
+
+<div class="btns">
+  <a href="/listings/<%= listing._id %>/edit"
+     class="btn btn-dark edit-btn offset-3">
+
+```
+ EDIT
+```
+
+  </a>
+
+  <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+
+```
+<button class="btn btn-dark offset-5">DELETE</button>
+```
+
+  </form>
+</div>
+
+<% } %>
+
+<!-- BOOKING FORM -->
+
+<% if(currUser && listing.owner && !currUser._id.equals(listing.owner._id)){ %>
+
+<div class="col-6 offset-3 mt-4 mb-3">
+
+<div class="card shadow-sm border-0"
+     style="border-radius:12px;overflow:hidden;">
+
+<div class="card-header text-white fw-bold"
+     style="background:linear-gradient(135deg,#2c3e50,#4ca1af);">
+
+<i class="fa-solid fa-calendar-check me-2"></i>
+Book this Listing
+
+</div>
+
+<div class="card-body" style="background:#f8f9fa;">
+
+<form action="/listings/<%= listing._id %>/bookings"
+      method="POST"
+      id="bookingForm"
+      novalidate
+      class="needs-validation">
+
+<div class="row g-3">
+
+<div class="col-md-6">
+
+<label class="form-label fw-semibold">Check-in Date</label>
+
+<input type="date"
+    name="booking[checkIn]"
+    id="checkIn"
+    class="form-control"
+    required
+    min="<%= new Date().toISOString().split('T')[0] %>">
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label fw-semibold">Check-out Date</label>
+
+<input type="date"
+    name="booking[checkOut]"
+    id="checkOut"
+    class="form-control"
+    required
+    min="<%= new Date().toISOString().split('T')[0] %>">
+
+</div>
+
+<div class="col-md-6">
+
+<label class="form-label fw-semibold">
+Number of Guests
+<span class="text-muted">
+(max <%= listing.maxGuests || 1 %>)
+</span>
+</label>
+
+<input type="number"
+    name="booking[guests]"
+    id="guests"
+    class="form-control"
+    min="1"
+    max="<%= listing.maxGuests || 1 %>"
+    value="1"
+    required>
+
+</div>
+
+<div class="col-md-6 d-flex align-items-end">
+
+<div id="pricePreview"
+     class="w-100 p-3 rounded text-center"
+     style="background:#e8f4f8;border:1px dashed #4ca1af;display:none;">
+
+<div class="text-muted small">Estimated Total</div>
+
+<div class="fw-bold fs-5 text-success"
+     id="totalPriceDisplay">
+
+₹0
+
+</div>
+
+<div class="text-muted small"
+     id="priceBreakdown">
+
+</div>
+
+</div>
+</div>
+</div>
+
+<div class="mt-4">
+
+<button type="submit"
+     class="btn btn-dark w-100 py-2 fw-bold">
+
+<i class="fa-solid fa-bolt me-1"></i>
+Confirm Booking
+
+</button>
+
+</div>
+
+</form>
+</div>
+</div>
+</div>
+
+<% } %>
+
+<!-- REVIEWS -->
+
+<div class="col-6 offset-3 mb-3">
+
+<hr>
+
+<% if(currUser){ %>
+
+<h4>Leave a review</h4>
+
+<form action="/listings/<%= listing._id %>/reviews"
+      method="POST"
+      novalidate
+      class="needs-validation">
+
+<label class="form-label">Rating</label>
+
+<fieldset class="starability-slot">
+
+<input type="radio"
+    id="no-rate"
+    class="input-no-rate"
+    name="review[rating]"
+    value="1"
+    checked>
+
+<input type="radio" name="review[rating]" value="1">
+<input type="radio" name="review[rating]" value="2">
+<input type="radio" name="review[rating]" value="3">
+<input type="radio" name="review[rating]" value="4">
+<input type="radio" name="review[rating]" value="5">
+
+</fieldset>
+
+<label class="form-label">Comment</label>
+
+<textarea name="review[comment]"
+          class="form-control"
+          required>
+
+</textarea>
+
+<button class="btn btn-outline-dark mt-2">Submit</button>
+
+</form>
+
+<% } %>
+
+<% if(listing.reviews.length>0){ %>
+
+<hr>
+<p><b>All Reviews</b></p>
+
+<% for(review of listing.reviews){ %>
+
+<div class="card col-md-12 col-lg-5 col-sm-12 ms-3 mb-3">
+
+<div class="card-body">
+
+<h5>@<%= review.author.username %></h5>
+
+<p class="starability-result"
+   data-rating="<%= review.rating %>">
+
+stars
+
+</p>
+
+<p><%= review.comment %></p>
+
+</div>
+
+<% if(currUser && currUser._id.equals(review.author._id)){ %>
+
+<form method="POST"
+      action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+
+<button class="btn btn-sm btn-dark">Delete</button>
+
+</form>
+
+<% } %>
+
+</div>
+
+<% } %>
+
+<% } %>
+
+</div>
+
+<!-- MAP -->
+
+<div class="col-6 offset-3 mb-3">
+
+<h3>Where you'll be</h3>
+
+<div id="map"></div>
+
+</div>
+
+<script src="/js/map.js"></script>
+
+<script>
+const basePrice = listingData.price;
+const checkInEl = document.getElementById('checkIn');
+const checkOutEl = document.getElementById('checkOut');
+const guestsEl = document.getElementById('guests');
+const previewEl = document.getElementById('pricePreview');
+const totalEl = document.getElementById('totalPriceDisplay');
+const breakdownEl = document.getElementById('priceBreakdown');
+
+function updatePreview(){
+
+if(!checkInEl || !checkOutEl || !guestsEl) return;
+
+const checkIn = new Date(checkInEl.value);
+const checkOut = new Date(checkOutEl.value);
+const guests = parseInt(guestsEl.value) || 0;
+
+if(!checkInEl.value || !checkOutEl.value || checkOut <= checkIn){
+
+previewEl.style.display='none';
+return;
+
+}
+
+const nights = Math.ceil((checkOut-checkIn)/(1000*60*60*24));
+const total = basePrice * guests * nights;
+
+totalEl.textContent='₹'+total.toLocaleString('en-IN');
+breakdownEl.textContent=`₹${basePrice} × ${guests} guest × ${nights} night`;
+
+previewEl.style.display='block';
+
+}
+
+if(checkInEl){
+
+checkInEl.addEventListener('change',updatePreview);
+checkOutEl.addEventListener('change',updatePreview);
+guestsEl.addEventListener('input',updatePreview);
+
+}
+</script>

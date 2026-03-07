@@ -1,0 +1,10 @@
+server is listening to port 8080
+C:\anshika\college\elitecoder main\wanderLust\node_modules\connect-mongo\build\main\lib\MongoStore.js:130
+                .db(options.dbName)
+                 ^
+
+TypeError: Cannot read properties of undefined (reading 'db')
+    at C:\anshika\college\elitecoder main\wanderLust\node_modules\connect-mongo\build\main\lib\MongoStore.js:130:18
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v24.12.0
