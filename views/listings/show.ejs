@@ -18,7 +18,6 @@ const listingData = JSON.parse(document.getElementById("listing-data").dataset.l
 
   <div class="card listing-card col-6 offset-3 show-card">
 
-```
 <!-- IMAGE CAROUSEL -->
 <div id="listingCarousel" class="carousel slide" data-bs-ride="carousel">
 
@@ -110,7 +109,7 @@ const listingData = JSON.parse(document.getElementById("listing-data").dataset.l
   <% } %>
 
 </div>
-```
+
 
   </div>
 </div>
@@ -123,17 +122,16 @@ const listingData = JSON.parse(document.getElementById("listing-data").dataset.l
   <a href="/listings/<%= listing._id %>/edit"
      class="btn btn-dark edit-btn offset-3">
 
-```
  EDIT
-```
+
 
   </a>
 
   <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
 
-```
+
 <button class="btn btn-dark offset-5">DELETE</button>
-```
+
 
   </form>
 </div>
@@ -274,20 +272,22 @@ Confirm Booking
 <label class="form-label">Rating</label>
 
 <fieldset class="starability-slot">
+  <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked>
 
-<input type="radio"
-    id="no-rate"
-    class="input-no-rate"
-    name="review[rating]"
-    value="1"
-    checked>
+  <input type="radio" id="rate1" name="review[rating]" value="1">
+  <label for="rate1" title="Terrible">1 star</label>
 
-<input type="radio" name="review[rating]" value="1">
-<input type="radio" name="review[rating]" value="2">
-<input type="radio" name="review[rating]" value="3">
-<input type="radio" name="review[rating]" value="4">
-<input type="radio" name="review[rating]" value="5">
+  <input type="radio" id="rate2" name="review[rating]" value="2">
+  <label for="rate2" title="Not good">2 stars</label>
 
+  <input type="radio" id="rate3" name="review[rating]" value="3">
+  <label for="rate3" title="Average">3 stars</label>
+
+  <input type="radio" id="rate4" name="review[rating]" value="4">
+  <label for="rate4" title="Very good">4 stars</label>
+
+  <input type="radio" id="rate5" name="review[rating]" value="5">
+  <label for="rate5" title="Amazing">5 stars</label>
 </fieldset>
 
 <label class="form-label">Comment</label>
@@ -304,48 +304,35 @@ Confirm Booking
 
 <% } %>
 
+
+
+<hr>
 <% if(listing.reviews.length>0){ %>
 
 <hr>
 <p><b>All Reviews</b></p>
 
-<% for(review of listing.reviews){ %>
+<div class="row">
+  <% for(review of listing.reviews){ %>
 
-<div class="card col-md-12 col-lg-5 col-sm-12 ms-3 mb-3">
+  <div class="card col-md-12 col-lg-5 col-sm-12 ms-3 mb-3">
+    <div class="card-body">
+      <h5>@<%= review.author.username %></h5>
+      <p class="starability-result" data-rating="<%= review.rating %>">stars</p>
+      <p><%= review.comment %></p>
+    </div>
 
-<div class="card-body">
+    <% if(currUser && currUser._id.equals(review.author._id)){ %>
+    <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+      <button class="btn btn-sm btn-dark">Delete</button>
+    </form>
+    <% } %>
+  </div>
 
-<h5>@<%= review.author.username %></h5>
-
-<p class="starability-result"
-   data-rating="<%= review.rating %>">
-
-stars
-
-</p>
-
-<p><%= review.comment %></p>
-
-</div>
-
-<% if(currUser && currUser._id.equals(review.author._id)){ %>
-
-<form method="POST"
-      action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-
-<button class="btn btn-sm btn-dark">Delete</button>
-
-</form>
-
-<% } %>
-
+  <% } %>
 </div>
 
 <% } %>
-
-<% } %>
-
-</div>
 
 <!-- MAP -->
 
